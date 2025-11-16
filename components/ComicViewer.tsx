@@ -37,7 +37,7 @@ export default function ComicViewer({ pages }: ComicViewerProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 pt-20 p-4 md:p-8">
       <div className="space-y-6 max-w-7xl mx-auto">
         {pages.map((page, pageIndex) => (
           <div

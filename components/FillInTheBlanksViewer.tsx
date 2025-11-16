@@ -81,7 +81,7 @@ export default function FillInTheBlanksViewer({ pages }: FillInTheBlanksViewerPr
 
   if (mode === 'preview') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 p-4 md:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 pt-20 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-bubblegum)' }}>
@@ -174,7 +174,7 @@ export default function FillInTheBlanksViewer({ pages }: FillInTheBlanksViewerPr
   const sentenceParts = currentPracticeBlank?.sentence.split('___') || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 p-4 md:p-8 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 pt-20 p-4 md:p-8 flex items-center justify-center">
       <div className="max-w-4xl w-full">
         <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl">
           <div className="text-center mb-8">

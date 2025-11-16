@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto, Bubblegum_Sans } from "next/font/google";
+import { Roboto, Bubblegum_Sans, Style_Script } from "next/font/google";
 import "./globals.css";
 import { FontStyleProvider } from "@/contexts/FontStyleContext";
 import FontStyleSelector from "@/components/FontStyleSelector";
@@ -16,6 +16,12 @@ const bubblegum = Bubblegum_Sans({
   variable: "--font-bubblegum",
 });
 
+const styleScript = Style_Script({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-style-script",
+});
+
 export const metadata: Metadata = {
   title: "Sansa Book - Kids Learning Platform",
   description: "Learn to read with 100 words books for kids",
@@ -28,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${bubblegum.variable} antialiased`}>
+      <body className={`${roboto.variable} ${bubblegum.variable} ${styleScript.variable} antialiased`}>
         <FontStyleProvider>
           <FontStyleSelector />
           {children}

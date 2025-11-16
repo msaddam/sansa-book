@@ -19,7 +19,7 @@ export function FontStyleProvider({ children }: { children: ReactNode }) {
   const getWordStyle = (word: string) => {
     switch (fontStyle) {
       case 'cursive':
-        return { fontFamily: 'var(--font-bubblegum)' };
+        return { fontFamily: 'var(--font-style-script)' };
       case 'capital':
         return { fontFamily: 'var(--font-roboto)', textTransform: 'uppercase' };
       case 'small':
