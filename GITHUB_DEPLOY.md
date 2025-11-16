@@ -5,13 +5,13 @@
 ### 1. Install Dependencies
 
 ```bash
-npm install
+yarn install
 ```
 
 ### 2. Test Locally
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 Visit http://localhost:3000
@@ -78,5 +78,5 @@ sansa-book/
 
 - Check Vercel build logs if deployment fails
 - Ensure all dependencies are in `package.json`
-- Run `npm run build` locally to test build
+- Run `yarn build` locally to test build
 

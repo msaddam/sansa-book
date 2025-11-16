@@ -3,13 +3,13 @@
 ## Step 1: Install Dependencies
 
 ```bash
-npm install
+yarn install
 ```
 
 ## Step 2: Test Locally
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 Visit http://localhost:3000 to verify everything works.
@@ -52,9 +52,9 @@ Replace `YOUR_USERNAME` with your GitHub username.
 3. **Configure (optional):**
    - Framework Preset: Next.js (auto-detected)
    - Root Directory: `./` (default)
-   - Build Command: `npm run build` (default)
+   - Build Command: `yarn build` (default)
    - Output Directory: `.next` (default)
-   - Install Command: `npm install` (default)
+   - Install Command: `yarn install` (default)
 
 4. **Deploy:**
    - Click "Deploy"
@@ -71,7 +71,7 @@ Replace `YOUR_USERNAME` with your GitHub username.
 
 ### Build Fails
 - Check that all dependencies are in `package.json`
-- Ensure TypeScript compiles without errors: `npm run build`
+- Ensure TypeScript compiles without errors: `yarn build`
 - Check Vercel build logs for specific errors
 
 ### Images Not Loading

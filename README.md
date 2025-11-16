@@ -15,18 +15,18 @@ A Next.js application for kids to learn reading with interactive word books.
 ### Prerequisites
 
 - Node.js 18+ 
-- npm or yarn
+- yarn
 
 ### Installation
 
 1. Install dependencies:
 ```bash
-npm install
+yarn install
 ```
 
 2. Run the development server:
 ```bash
-npm run dev
+yarn dev
 ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser

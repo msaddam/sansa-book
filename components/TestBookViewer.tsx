@@ -220,7 +220,7 @@ export default function TestBookViewer({ pages }: TestBookViewerProps) {
               </div>
               {currentWord?.phrase && (
                 <div className="text-xl text-gray-600 italic">
-                  "{currentWord.phrase}"
+                  &quot;{currentWord.phrase}&quot;
                 </div>
               )}
             </div>
