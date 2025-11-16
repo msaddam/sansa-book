@@ -1,0 +1,252 @@
+---
+alwaysApply: true
+---
+
+
+1. Project Overview
+
+This project is a Kids Learning Platform with:
+
+Reading books
+
+Practice homework (2-letter, 3-letter words, math)
+
+Assignments
+
+Class management
+
+Student dashboard
+
+Teacher dashboard
+
+Marking system
+
+NestJS backend + MongoDB
+
+Next.js frontend (Vercel deploy)
+
+All code must be written in TypeScript.
+
+2. Technology Rules
+Frontend
+
+Use Next.js App Router.
+
+Use Shadcn UI for components.
+
+Use Tailwind CSS.
+
+Use React Hook Form for forms.
+
+Use Zustand or Context for state management.
+
+Store API URL in NEXT_PUBLIC_API_URL.
+
+Backend
+
+Use NestJS.
+
+Use Mongoose for MongoDB schemas.
+
+Use JWT Auth.
+
+Implement role-based access:
+
+admin
+
+teacher
+
+student
+
+parent
+
+Database
+
+Use MongoDB Atlas.
+
+Every collection must include:
+
+createdAt
+
+updatedAt
+
+createdBy
+
+3. Required Backend Modules
+Auth Module
+
+Signup/Login with JWT
+
+Password hashing (bcrypt)
+
+Role guard
+
+Protect teacher- and student-specific routes
+
+Users Module
+
+CRUD users
+
+Assign student to class
+
+Assign teacher to class
+
+Classes Module
+
+Create classes (Class 1, Class 2…)
+
+Assign subjects
+
+Attach teacher
+
+List students in a class
+
+Books Module
+
+Store books with pages
+
+Page contains:
+
+text
+
+image URL
+
+Reading endpoint for student
+
+Assignments Module
+
+Teacher creates assignments
+
+Types:
+
+text question
+
+fill-in-the-blank
+
+MCQ
+
+upload image answer
+
+Assign to:
+
+whole class
+
+or specific students
+
+Submissions Module
+
+Student submits answers
+
+Teacher marks submission
+
+Provide feedback
+
+Send total marks with progress
+
+4. Frontend Structure Rules
+App Directory Structure
+/app
+ ├── login
+ ├── teacher
+ │     ├── dashboard
+ │     ├── classes
+ │     ├── assignments
+ │     ├── marking
+ ├── student
+ │     ├── dashboard
+ │     ├── reading
+ │     ├── assignments
+ │     ├── submissions
+ └── parent
+
+Components Required
+
+Navbar
+
+Sidebar (teacher/student)
+
+ClassCard
+
+AssignmentCard
+
+ReadingPageViewer
+
+MarksDisplay
+
+SubmitAssignmentForm
+
+5. Reading Module Rules
+
+Books stored as pages (text or image)
+
+Next/Previous navigation
+
+A4 horizontal layout option for printing
+
+Option to generate PDF worksheets for:
+
+2-letter words
+
+3-letter words
+
+math practice
+
+6. Homework/Worksheet Rules
+
+System must generate:
+
+2-letter words worksheets
+
+3-letter words worksheets
+
+Simple math sheets
+(Format: teacher selects count & difficulty)
+
+Worksheets must:
+
+Be printable in A4 landscape
+
+Stored in database as assignment templates
+
+7. Assignment & Marking Rules
+Assignment Creation
+
+Teacher chooses:
+
+class
+
+assignment title
+
+question set
+
+due date
+
+Submission
+
+Student can submit:
+
+Text answer
+
+MCQ answer
+
+Uploaded image answer
+
+Marking
+
+Teacher can:
+
+Enter marks
+
+Enter feedback
+
+Send to student dashboard
+
+Reporting
+
+Track student progress
+
+% Completed
+
+Average marks
+
+Latest feedback

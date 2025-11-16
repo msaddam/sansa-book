@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Words Book - Learn to Read!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 100px 20px 20px;
+        }
+        
+        .book-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 80px;
+        }
+        
+        .navigation {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn:nth-child(1) { background: #FF6B9D; color: white; }
+        .nav-btn:nth-child(2) { background: #4FC3F7; color: white; }
+        .nav-btn:nth-child(3) { background: #FFD700; color: #333; }
+        .nav-btn:nth-child(4) { background: #98FB98; color: #333; }
+        .nav-btn:nth-child(5) { background: #BA68C8; color: white; }
+        
+        /* Common page styles */
+        .title {
+            text-align: center;
+            padding: 50px 40px 30px;
+            font-size: 72px;
+            font-weight: 700;
+            font-family: 'Bubblegum Sans', cursive;
+            text-shadow: 4px 4px 0 #FFF, 6px 6px 0 rgba(0,0,0,0.1);
+        }
+        
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 30px 60px;
+            max-width: 100%;
+        }
+        
+        .word-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border: 5px solid;
+            text-align: center;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 220px;
+        }
+        
+        .icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+        
+        .word-card:hover {
+            transform: translateY(-5px) scale(1.08);
+        }
+        
+        .word {
+            font-size: 42px;
+            font-weight: 700;
+            font-family: 'Bubblegum Sans', cursive;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        
+        .phrase {
+            font-size: 18px;
+            font-weight: 400;
+            font-family: 'Fredoka', sans-serif;
+            color: #555;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+        
+        .page-number {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 38px;
+            font-weight: 700;
+            font-family: 'Bubblegum Sans', cursive;
+            background: white;
+            padding: 12px 35px;
+            border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        
+        /* Page 1 */
+        .page-1 {
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFDAB9 50%, #FFB6C1 100%);
+        }
+        
+        .page-1 .title { color: #FF1493; }
+        .page-1 .page-number { color: #FF1493; }
+        
+        /* Page 2 */
+        .page-2 {
+            background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 50%, #BA68C8 100%);
+        }
+        
+        .page-2 .title { color: #6A1B9A; }
+        .page-2 .page-number { color: #6A1B9A; }
+        
+        /* Page 3 */
+        .page-3 {
+            background: linear-gradient(135deg, #B3E5FC 0%, #81D4FA 50%, #4FC3F7 100%);
+        }
+        
+        .page-3 .title { color: #0277BD; }
+        .page-3 .page-number { color: #0277BD; }
+        
+        /* Page 4 */
+        .page-4 {
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 50%, #81C784 100%);
+        }
+        
+        .page-4 .title { color: #2E7D32; }
+        .page-4 .page-number { color: #2E7D32; }
+        
+        /* Page 5 */
+        .page-5 {
+            background: linear-gradient(135deg, #FFE082 0%, #FFD54F 50%, #FFCA28 100%);
+        }
+        
+        .page-5 .title { color: #F57F17; }
+        .page-5 .page-number { color: #F57F17; }
+        
+        /* Rainbow colors for word cards */
+        .color-1 { border-color: #FF1744; }
+        .color-1 .word { color: #C2185B; }
+        
+        .color-2 { border-color: #FF6F00; }
+        .color-2 .word { color: #E65100; }
+        
+        .color-3 { border-color: #FFD600; }
+        .color-3 .word { color: #F57F17; }
+        
+        .color-4 { border-color: #00E676; }
+        .color-4 .word { color: #2E7D32; }
+        
+        .color-5 { border-color: #00B0FF; }
+        .color-5 .word { color: #01579B; }
+        
+        .color-6 { border-color: #D500F9; }
+        .color-6 .word { color: #6A1B9A; }
+        
+        .decorative-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 20px solid rgba(255,255,255,0.4);
+            pointer-events: none;
+            border-radius: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .word-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                padding: 20px 30px;
+                gap: 15px;
+            }
+            
+            .title {
+                font-size: 48px;
+                padding: 30px 20px 20px;
+            }
+            
+            .word {
+                font-size: 32px;
+            }
+            
+            .phrase {
+                font-size: 14px;
+            }
+            
+            .icon {
+                font-size: 40px;
+            }
+            
+            .word-card {
+                min-height: 140px;
+                padding: 15px 10px;
+            }
+            
+            .page-number {
+                font-size: 28px;
+                padding: 8px 20px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .page {
+                page-break-inside: avoid;
+                box-shadow: none;
+                margin: 0;
+                min-height: auto;
+            }
+            .navigation {
+                display: none;
+            }
+            .word-card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="book-container">
+        <!-- Page 1: Words 1-20 -->
+        <div class="page page-1">
+            <div class="decorative-border"></div>
+            <div class="title">⭐ 100 Words to Read! ⭐</div>
+            
+            <div class="word-grid">
+                <div class="word-card color-1"><div class="icon">🐦</div><div class="word">Bird</div><div class="phrase">A bird flies</div></div>
+                <div class="word-card color-2"><div class="icon">🎂</div><div class="word">Cake</div><div class="phrase">A birthday cake</div></div>
+                <div class="word-card color-3"><div class="icon">🚪</div><div class="word">Door</div><div class="phrase">Open the door</div></div>
+                <div class="word-card color-4"><div class="icon">🐟</div><div class="word">Fish</div><div class="phrase">A fish swims</div></div>
+                <div class="word-card color-5"><div class="icon">🎮</div><div class="word">Game</div><div class="phrase">Play a game</div></div>
+                <div class="word-card color-6"><div class="icon">✋</div><div class="word">Hand</div><div class="phrase">Raise your hand</div></div>
+                
+                <div class="word-card color-6"><div class="icon">🦘</div><div class="word">Jump</div><div class="phrase">Jump up high</div></div>
+                <div class="word-card color-1"><div class="icon">🪁</div><div class="word">Kite</div><div class="phrase">Fly a kite</div></div>
+                <div class="word-card color-2"><div class="icon">🦁</div><div class="word">Lion</div><div class="phrase">A big lion</div></div>
+                <div class="word-card color-3"><div class="icon">🥛</div><div class="word">Milk</div><div class="phrase">Drink some milk</div></div>
+                <div class="word-card color-4"><div class="icon">🐦</div><div class="word">Nest</div><div class="phrase">A bird nest</div></div>
+                <div class="word-card color-5"><div class="icon">🔓</div><div class="word">Open</div><div class="phrase">Open the box</div></div>
+                
+                <div class="word-card color-5"><div class="icon">🎮</div><div class="word">Play</div><div class="phrase">Let us play</div></div>
+                <div class="word-card color-6"><div class="icon">🌧️</div><div class="word">Rain</div><div class="phrase">It is raining</div></div>
+                <div class="word-card color-1"><div class="icon">⭐</div><div class="word">Star</div><div class="phrase">A bright star</div></div>
+                <div class="word-card color-2"><div class="icon">🌳</div><div class="word">Tree</div><div class="phrase">A tall tree</div></div>
+                <div class="word-card color-3"><div class="icon">🚶</div><div class="word">Walk</div><div class="phrase">Walk to school</div></div>
+                <div class="word-card color-4"><div class="icon">🏡</div><div class="word">Yard</div><div class="phrase">Play in yard</div></div>
+                
+                <div class="word-card color-4"><div class="icon">🔵</div><div class="word">Blue</div><div class="phrase">Blue is nice</div></div>
+                <div class="word-card color-5"><div class="icon">❄️</div><div class="word">Cold</div><div class="phrase">It is cold</div></div>
+                
+            </div>
+            <div class="page-number">Page 1 of 5</div>
+        </div>
+        
+        <!-- Page 2: Words 21-40 -->
+        <div class="page page-2">
+            <div class="decorative-border"></div>
+            <div class="title">🌈 Keep Reading! 🌈</div>
+            
+            <div class="word-grid">
+                <div class="word-card color-6"><div class="icon">🦆</div><div class="word">Duck</div><div class="phrase">A duck quacks</div></div>
+                <div class="word-card color-1"><div class="icon">🥚</div><div class="word">Eggs</div><div class="phrase">Two eggs please</div></div>
+                <div class="word-card color-2"><div class="icon">🚜</div><div class="word">Farm</div><div class="phrase">Visit the farm</div></div>
+                <div class="word-card color-3"><div class="icon">👧</div><div class="word">Girl</div><div class="phrase">A happy girl</div></div>
+                
+                <div class="word-card color-3"><div class="icon">🏠</div><div class="word">Home</div><div class="phrase">Go back home</div></div>
+                <div class="word-card color-4"><div class="icon">💡</div><div class="word">Idea</div><div class="phrase">A good idea</div></div>
+                <div class="word-card color-5"><div class="icon">🔑</div><div class="word">Keep</div><div class="phrase">Keep it safe</div></div>
+                <div class="word-card color-6"><div class="icon">🏞️</div><div class="word">Lake</div><div class="phrase">Swim in lake</div></div>
+                <div class="word-card color-1"><div class="icon">🌙</div><div class="word">Moon</div><div class="phrase">The moon shines</div></div>
+                <div class="word-card color-2"><div class="icon">🏷️</div><div class="word">Name</div><div class="phrase">What is your name</div></div>
+                
+                <div class="word-card color-2"><div class="icon">🌳</div><div class="word">Park</div><div class="phrase">Play in park</div></div>
+                <div class="word-card color-3"><div class="icon">❓</div><div class="word">Quiz</div><div class="phrase">Take a quiz</div></div>
+                <div class="word-card color-4"><div class="icon">📖</div><div class="word">Read</div><div class="phrase">Read a book</div></div>
+                <div class="word-card color-5"><div class="icon">🎤</div><div class="word">Sing</div><div class="phrase">Sing a song</div></div>
+                <div class="word-card color-6"><div class="icon">⏰</div><div class="word">Time</div><div class="phrase">What time is it</div></div>
+                <div class="word-card color-1"><div class="icon">📦</div><div class="word">Unit</div><div class="phrase">One unit please</div></div>
+                
+                <div class="word-card color-1"><div class="icon">✅</div><div class="word">Very</div><div class="phrase">Very good job</div></div>
+                <div class="word-card color-2"><div class="icon">🔥</div><div class="word">Warm</div><div class="phrase">It is warm</div></div>
+                <div class="word-card color-3"><div class="icon">💨</div><div class="word">Wind</div><div class="phrase">The wind blows</div></div>
+                <div class="word-card color-4"><div class="icon">⭐</div><div class="word">Wish</div><div class="phrase">Make a wish</div></div>
+            </div>
+            <div class="page-number">Page 2 of 5</div>
+        </div>
+        
+        <!-- Page 3: Words 41-60 -->
+        <div class="page page-3">
+            <div class="decorative-border"></div>
+            <div class="title">🚀 You're Doing Great! 🚀</div>
+            
+            <div class="word-grid">
+                <div class="word-card color-5"><div class="icon">👶</div><div class="word">Baby</div><div class="phrase">A cute baby</div></div>
+                <div class="word-card color-6"><div class="icon">🪑</div><div class="word">Desk</div><div class="phrase">Sit at desk</div></div>
+                
+                <div class="word-card color-6"><div class="icon">😊</div><div class="word">Easy</div><div class="phrase">It is easy</div></div>
+                <div class="word-card color-1"><div class="icon">😀</div><div class="word">Face</div><div class="phrase">A happy face</div></div>
+                <div class="word-card color-2"><div class="icon">👍</div><div class="word">Good</div><div class="phrase">Good job done</div></div>
+                <div class="word-card color-3"><div class="icon">🆘</div><div class="word">Help</div><div class="phrase">I need help</div></div>
+                <div class="word-card color-4"><div class="icon">➡️</div><div class="word">Into</div><div class="phrase">Go into room</div></div>
+                <div class="word-card color-5"><div class="icon">⚖️</div><div class="word">Just</div><div class="phrase">Just do it</div></div>
+                
+                <div class="word-card color-5"><div class="icon">❤️</div><div class="word">Kind</div><div class="phrase">Be kind always</div></div>
+                <div class="word-card color-6"><div class="icon">⬅️</div><div class="word">Left</div><div class="phrase">Turn to left</div></div>
+                <div class="word-card color-1"><div class="icon">🔢</div><div class="word">Many</div><div class="phrase">Many toys here</div></div>
+                <div class="word-card color-2"><div class="icon">✨</div><div class="word">Nice</div><div class="phrase">Have a nice day</div></div>
+                <div class="word-card color-3"><div class="icon">1️⃣</div><div class="word">Only</div><div class="phrase">Only one left</div></div>
+                <div class="word-card color-4"><div class="icon">🧩</div><div class="word">Part</div><div class="phrase">Part of whole</div></div>
+                
+                <div class="word-card color-4"><div class="icon">🛑</div><div class="word">Quit</div><div class="phrase">Do not quit</div></div>
+                <div class="word-card color-5"><div class="icon">😴</div><div class="word">Rest</div><div class="phrase">Take a rest</div></div>
+                <div class="word-card color-6"><div class="icon">👥</div><div class="word">Some</div><div class="phrase">Some of them</div></div>
+                <div class="word-card color-1"><div class="icon">✋</div><div class="word">Take</div><div class="phrase">Take your time</div></div>
+                <div class="word-card color-2"><div class="icon">👆</div><div class="word">Upon</div><div class="phrase">Upon the table</div></div>
+                <div class="word-card color-3"><div class="icon">👀</div><div class="word">View</div><div class="phrase">A nice view</div></div>
+            </div>
+            <div class="page-number">Page 3 of 5</div>
+        </div>
+        
+        <!-- Page 4: Words 61-80 -->
+        <div class="page page-4">
+            <div class="decorative-border"></div>
+            <div class="title">🌟 Almost There! 🌟</div>
+            
+            <div class="word-grid">
+                <div class="word-card color-3"><div class="icon">✅</div><div class="word">Able</div><div class="phrase">I am able to</div></div>
+                <div class="word-card color-4"><div class="icon">⬅️</div><div class="word">Back</div><div class="phrase">Come back soon</div></div>
+                <div class="word-card color-5"><div class="icon">📞</div><div class="word">Call</div><div class="phrase">Call me later</div></div>
+                <div class="word-card color-6"><div class="icon">⬇️</div><div class="word">Down</div><div class="phrase">Sit down please</div></div>
+                <div class="word-card color-1"><div class="icon">👤</div><div class="word">Each</div><div class="phrase">Each one counts</div></div>
+                <div class="word-card color-2"><div class="icon">🔍</div><div class="word">Find</div><div class="phrase">Find your book</div></div>
+                
+                <div class="word-card color-2"><div class="icon">🎁</div><div class="word">Give</div><div class="phrase">Give it to me</div></div>
+                <div class="word-card color-3"><div class="icon">✋</div><div class="word">Have</div><div class="phrase">I have a toy</div></div>
+                <div class="word-card color-4"><div class="icon">🏠</div><div class="word">Room</div><div class="phrase">Go to your room</div></div>
+                <div class="word-card color-5"><div class="icon">🏃</div><div class="word">Runs</div><div class="phrase">He runs fast</div></div>
+                <div class="word-card color-6"><div class="icon">👀</div><div class="word">Seen</div><div class="phrase">I have seen it</div></div>
+                <div class="word-card color-1"><div class="icon">❤️</div><div class="word">Like</div><div class="phrase">I like to play</div></div>
+                
+                <div class="word-card color-1"><div class="icon">🔨</div><div class="word">Make</div><div class="phrase">Make a cake</div></div>
+                <div class="word-card color-2"><div class="icon">🆘</div><div class="word">Need</div><div class="phrase">I need help now</div></div>
+                <div class="word-card color-3"><div class="icon">⬆️</div><div class="word">Over</div><div class="phrase">Jump over it</div></div>
+                <div class="word-card color-4"><div class="icon">🌊</div><div class="word">Wave</div><div class="phrase">Wave your hand</div></div>
+                <div class="word-card color-5"><div class="icon">❌</div><div class="word">Stop</div><div class="phrase">Stop right now</div></div>
+                <div class="word-card color-6"><div class="icon">📚</div><div class="word">Book</div><div class="phrase">Read a book</div></div>
+                
+                <div class="word-card color-6"><div class="icon">💬</div><div class="word">Said</div><div class="phrase">He said hello</div></div>
+                <div class="word-card color-1"><div class="icon">📢</div><div class="word">Tell</div><div class="phrase">Tell me a story</div></div>
+            </div>
+            <div class="page-number">Page 4 of 5</div>
+        </div>
+        
+        <!-- Page 5: Words 81-100 -->
+        <div class="page page-5">
+            <div class="decorative-border"></div>
+            <div class="title">🎉 You Did It! 100 Words! 🎉</div>
+            
+            <div class="word-grid">
+                <div class="word-card color-2"><div class="icon">👆</div><div class="word">Went</div><div class="phrase">He went away</div></div>
+                <div class="word-card color-3"><div class="icon">💪</div><div class="word">Wide</div><div class="phrase">A wide road</div></div>
+                <div class="word-card color-4"><div class="icon">🌊</div><div class="word">With</div><div class="phrase">Play with me</div></div>
+                <div class="word-card color-5"><div class="icon">📅</div><div class="word">Year</div><div class="phrase">Happy new year</div></div>
+                <div class="word-card color-6"><div class="icon">📍</div><div class="word">Zone</div><div class="phrase">A safe zone</div></div>
+                
+                <div class="word-card color-5"><div class="icon">➕</div><div class="word">Also</div><div class="phrase">I also want it</div></div>
+                <div class="word-card color-6"><div class="icon">✅</div><div class="word">Been</div><div class="phrase">I have been there</div></div>
+                <div class="word-card color-1"><div class="icon">🚶</div><div class="word">Came</div><div class="phrase">He came to play</div></div>
+                <div class="word-card color-2"><div class="icon">✅</div><div class="word">Done</div><div class="phrase">All done now</div></div>
+                <div class="word-card color-3"><div class="icon">⚖️</div><div class="word">Even</div><div class="phrase">Even I can do</div></div>
+                <div class="word-card color-4"><div class="icon">📤</div><div class="word">From</div><div class="phrase">Come from home</div></div>
+                
+                <div class="word-card color-4"><div class="icon">👋</div><div class="word">Gone</div><div class="phrase">He has gone</div></div>
+                <div class="word-card color-5"><div class="icon">📍</div><div class="word">Here</div><div class="phrase">Come over here</div></div>
+                <div class="word-card color-6"><div class="icon">🏫</div><div class="word">Show</div><div class="phrase">Show me how</div></div>
+                <div class="word-card color-1"><div class="icon">🎯</div><div class="word">That</div><div class="phrase">That is good</div></div>
+                <div class="word-card color-2"><div class="icon">🔑</div><div class="word">Kept</div><div class="phrase">I kept it safe</div></div>
+                <div class="word-card color-3"><div class="icon">📏</div><div class="word">Long</div><div class="phrase">A long time</div></div>
+                
+                <div class="word-card color-3"><div class="icon">🎨</div><div class="word">Draw</div><div class="phrase">Draw a picture</div></div>
+                <div class="word-card color-4"><div class="icon">➡️</div><div class="word">Next</div><div class="phrase">See you next time</div></div>
+                <div class="word-card color-5"><div class="icon">1️⃣</div><div class="word">Once</div><div class="phrase">Once upon a time</div></div>
+                <div class="word-card color-6"><div class="icon">📖</div><div class="word">Page</div><div class="phrase">Turn the page</div></div>
+            </div>
+            <div class="page-number">Page 5 of 5 ✨</div>
+        </div>
+    </div>
+</body>
+</html>

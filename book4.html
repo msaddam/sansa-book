@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Book - Learn to Read!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .book-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .page {
+            width: 100%;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            padding: 40px;
+            min-height: auto;
+        }
+        
+        .title {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 48px;
+            font-weight: 700;
+            font-family: 'Bubblegum Sans', cursive;
+            text-shadow: 3px 3px 0 #FFF, 5px 5px 0 rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .comic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+        
+        .comic-panel {
+            background: white;
+            border: 4px solid #000;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .comic-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+        }
+        
+        .comic-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #333;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin-bottom: 12px;
+        }
+        
+        .comic-word {
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'Bubblegum Sans', cursive;
+            text-align: center;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .comic-phrase {
+            font-size: 16px;
+            font-weight: 400;
+            font-family: 'Fredoka', sans-serif;
+            color: #555;
+            text-align: center;
+            line-height: 1.4;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border: 1px dashed #ccc;
+        }
+        
+        .speech-bubble {
+            position: relative;
+            background: white;
+            border: 2px solid #000;
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #000;
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -7px;
+            left: 22px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid white;
+        }
+        
+        .page-number {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Bubblegum Sans', cursive;
+            margin-top: 30px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+        
+        /* Page colors */
+        .page-1 {
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFDAB9 50%, #FFB6C1 100%);
+        }
+        .page-1 .title { color: #FF1493; }
+        .page-1 .page-number { color: #FF1493; }
+        
+        .page-2 {
+            background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 50%, #BA68C8 100%);
+        }
+        .page-2 .title { color: #6A1B9A; }
+        .page-2 .page-number { color: #6A1B9A; }
+        
+        .page-3 {
+            background: linear-gradient(135deg, #B3E5FC 0%, #81D4FA 50%, #4FC3F7 100%);
+        }
+        .page-3 .title { color: #0277BD; }
+        .page-3 .page-number { color: #0277BD; }
+        
+        .page-4 {
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 50%, #81C784 100%);
+        }
+        .page-4 .title { color: #2E7D32; }
+        .page-4 .page-number { color: #2E7D32; }
+        
+        .page-5 {
+            background: linear-gradient(135deg, #FFE082 0%, #FFD54F 50%, #FFCA28 100%);
+        }
+        .page-5 .title { color: #F57F17; }
+        .page-5 .page-number { color: #F57F17; }
+        
+        /* Color variations for panels */
+        .panel-1 { border-color: #FF1744; }
+        .panel-2 { border-color: #FF6F00; }
+        .panel-3 { border-color: #FFD600; }
+        .panel-4 { border-color: #00E676; }
+        .panel-5 { border-color: #00B0FF; }
+        .panel-6 { border-color: #D500F9; }
+        
+        @media (max-width: 768px) {
+            .comic-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .title {
+                font-size: 32px;
+                padding: 20px 10px;
+            }
+            
+            .comic-word {
+                font-size: 24px;
+            }
+            
+            .comic-phrase {
+                font-size: 14px;
+            }
+            
+            .comic-image {
+                height: 120px;
+                font-size: 40px;
+            }
+            
+            .page {
+                padding: 20px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .page {
+                page-break-inside: avoid;
+                box-shadow: none;
+                margin: 0;
+                min-height: auto;
+            }
+            .comic-panel {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="book-container">
+        <!-- Page 1: Words 1-20 -->
+        <div class="page page-1">
+            <div class="title">⭐ Comic Book - 100 Words! ⭐</div>
+            
+            <div class="comic-grid">
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🐦</div>
+                    <div class="comic-word">Bird</div>
+                    <div class="comic-phrase">A bird flies</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🎂</div>
+                    <div class="comic-word">Cake</div>
+                    <div class="comic-phrase">A birthday cake</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">🚪</div>
+                    <div class="comic-word">Door</div>
+                    <div class="comic-phrase">Open the door</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🐟</div>
+                    <div class="comic-word">Fish</div>
+                    <div class="comic-phrase">A fish swims</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">🎮</div>
+                    <div class="comic-word">Game</div>
+                    <div class="comic-phrase">Play a game</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">✋</div>
+                    <div class="comic-word">Hand</div>
+                    <div class="comic-phrase">Raise your hand</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">🦘</div>
+                    <div class="comic-word">Jump</div>
+                    <div class="comic-phrase">Jump up high</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🪁</div>
+                    <div class="comic-word">Kite</div>
+                    <div class="comic-phrase">Fly a kite</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🦁</div>
+                    <div class="comic-word">Lion</div>
+                    <div class="comic-phrase">A big lion</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">🥛</div>
+                    <div class="comic-word">Milk</div>
+                    <div class="comic-phrase">Drink some milk</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🐦</div>
+                    <div class="comic-word">Nest</div>
+                    <div class="comic-phrase">A bird nest</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">🔓</div>
+                    <div class="comic-word">Open</div>
+                    <div class="comic-phrase">Open the box</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">🎮</div>
+                    <div class="comic-word">Play</div>
+                    <div class="comic-phrase">Let us play</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">🌧️</div>
+                    <div class="comic-word">Rain</div>
+                    <div class="comic-phrase">It is raining</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">⭐</div>
+                    <div class="comic-word">Star</div>
+                    <div class="comic-phrase">A bright star</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🌳</div>
+                    <div class="comic-word">Tree</div>
+                    <div class="comic-phrase">A tall tree</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">🚶</div>
+                    <div class="comic-word">Walk</div>
+                    <div class="comic-phrase">Walk to school</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🏡</div>
+                    <div class="comic-word">Yard</div>
+                    <div class="comic-phrase">Play in yard</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🔵</div>
+                    <div class="comic-word">Blue</div>
+                    <div class="comic-phrase">Blue is nice</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">❄️</div>
+                    <div class="comic-word">Cold</div>
+                    <div class="comic-phrase">It is cold</div>
+                </div>
+            </div>
+            <div class="page-number">Page 1 of 5</div>
+        </div>
+        
+        <!-- Page 2: Words 21-40 -->
+        <div class="page page-2">
+            <div class="title">🌈 Keep Reading! 🌈</div>
+            
+            <div class="comic-grid">
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">🦆</div>
+                    <div class="comic-word">Duck</div>
+                    <div class="comic-phrase">A duck quacks</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🥚</div>
+                    <div class="comic-word">Eggs</div>
+                    <div class="comic-phrase">Two eggs please</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🚜</div>
+                    <div class="comic-word">Farm</div>
+                    <div class="comic-phrase">Visit the farm</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">👧</div>
+                    <div class="comic-word">Girl</div>
+                    <div class="comic-phrase">A happy girl</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">🏠</div>
+                    <div class="comic-word">Home</div>
+                    <div class="comic-phrase">Go back home</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">💡</div>
+                    <div class="comic-word">Idea</div>
+                    <div class="comic-phrase">A good idea</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">🔑</div>
+                    <div class="comic-word">Keep</div>
+                    <div class="comic-phrase">Keep it safe</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">🏞️</div>
+                    <div class="comic-word">Lake</div>
+                    <div class="comic-phrase">Swim in lake</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🌙</div>
+                    <div class="comic-word">Moon</div>
+                    <div class="comic-phrase">The moon shines</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🏷️</div>
+                    <div class="comic-word">Name</div>
+                    <div class="comic-phrase">What is your name</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🌳</div>
+                    <div class="comic-word">Park</div>
+                    <div class="comic-phrase">Play in park</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">❓</div>
+                    <div class="comic-word">Quiz</div>
+                    <div class="comic-phrase">Take a quiz</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">📖</div>
+                    <div class="comic-word">Read</div>
+                    <div class="comic-phrase">Read a book</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">🎤</div>
+                    <div class="comic-word">Sing</div>
+                    <div class="comic-phrase">Sing a song</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">⏰</div>
+                    <div class="comic-word">Time</div>
+                    <div class="comic-phrase">What time is it</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">📦</div>
+                    <div class="comic-word">Unit</div>
+                    <div class="comic-phrase">One unit please</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">✅</div>
+                    <div class="comic-word">Very</div>
+                    <div class="comic-phrase">Very good job</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🔥</div>
+                    <div class="comic-word">Warm</div>
+                    <div class="comic-phrase">It is warm</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">💨</div>
+                    <div class="comic-word">Wind</div>
+                    <div class="comic-phrase">The wind blows</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">⭐</div>
+                    <div class="comic-word">Wish</div>
+                    <div class="comic-phrase">Make a wish</div>
+                </div>
+            </div>
+            <div class="page-number">Page 2 of 5</div>
+        </div>
+        
+        <!-- Page 3: Words 41-60 -->
+        <div class="page page-3">
+            <div class="title">🚀 You're Doing Great! 🚀</div>
+            
+            <div class="comic-grid">
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">👶</div>
+                    <div class="comic-word">Baby</div>
+                    <div class="comic-phrase">A cute baby</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">🪑</div>
+                    <div class="comic-word">Desk</div>
+                    <div class="comic-phrase">Sit at desk</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">😊</div>
+                    <div class="comic-word">Easy</div>
+                    <div class="comic-phrase">It is easy</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">😀</div>
+                    <div class="comic-word">Face</div>
+                    <div class="comic-phrase">A happy face</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">👍</div>
+                    <div class="comic-word">Good</div>
+                    <div class="comic-phrase">Good job done</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">🆘</div>
+                    <div class="comic-word">Help</div>
+                    <div class="comic-phrase">I need help</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">➡️</div>
+                    <div class="comic-word">Into</div>
+                    <div class="comic-phrase">Go into room</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">⚖️</div>
+                    <div class="comic-word">Just</div>
+                    <div class="comic-phrase">Just do it</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">❤️</div>
+                    <div class="comic-word">Kind</div>
+                    <div class="comic-phrase">Be kind always</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">⬅️</div>
+                    <div class="comic-word">Left</div>
+                    <div class="comic-phrase">Turn to left</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🔢</div>
+                    <div class="comic-word">Many</div>
+                    <div class="comic-phrase">Many toys here</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">✨</div>
+                    <div class="comic-word">Nice</div>
+                    <div class="comic-phrase">Have a nice day</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">1️⃣</div>
+                    <div class="comic-word">Only</div>
+                    <div class="comic-phrase">Only one left</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🧩</div>
+                    <div class="comic-word">Part</div>
+                    <div class="comic-phrase">Part of whole</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🛑</div>
+                    <div class="comic-word">Quit</div>
+                    <div class="comic-phrase">Do not quit</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">😴</div>
+                    <div class="comic-word">Rest</div>
+                    <div class="comic-phrase">Take a rest</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">👥</div>
+                    <div class="comic-word">Some</div>
+                    <div class="comic-phrase">Some of them</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">✋</div>
+                    <div class="comic-word">Take</div>
+                    <div class="comic-phrase">Take your time</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">👆</div>
+                    <div class="comic-word">Upon</div>
+                    <div class="comic-phrase">Upon the table</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">👀</div>
+                    <div class="comic-word">View</div>
+                    <div class="comic-phrase">A nice view</div>
+                </div>
+            </div>
+            <div class="page-number">Page 3 of 5</div>
+        </div>
+        
+        <!-- Page 4: Words 61-80 -->
+        <div class="page page-4">
+            <div class="title">🌟 Almost There! 🌟</div>
+            
+            <div class="comic-grid">
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">✅</div>
+                    <div class="comic-word">Able</div>
+                    <div class="comic-phrase">I am able to</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">⬅️</div>
+                    <div class="comic-word">Back</div>
+                    <div class="comic-phrase">Come back soon</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">📞</div>
+                    <div class="comic-word">Call</div>
+                    <div class="comic-phrase">Call me later</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">⬇️</div>
+                    <div class="comic-word">Down</div>
+                    <div class="comic-phrase">Sit down please</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">👤</div>
+                    <div class="comic-word">Each</div>
+                    <div class="comic-phrase">Each one counts</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🔍</div>
+                    <div class="comic-word">Find</div>
+                    <div class="comic-phrase">Find your book</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🎁</div>
+                    <div class="comic-word">Give</div>
+                    <div class="comic-phrase">Give it to me</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">✋</div>
+                    <div class="comic-word">Have</div>
+                    <div class="comic-phrase">I have a toy</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🏠</div>
+                    <div class="comic-word">Room</div>
+                    <div class="comic-phrase">Go to your room</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">🏃</div>
+                    <div class="comic-word">Runs</div>
+                    <div class="comic-phrase">He runs fast</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">👀</div>
+                    <div class="comic-word">Seen</div>
+                    <div class="comic-phrase">I have seen it</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">❤️</div>
+                    <div class="comic-word">Like</div>
+                    <div class="comic-phrase">I like to play</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🔨</div>
+                    <div class="comic-word">Make</div>
+                    <div class="comic-phrase">Make a cake</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🆘</div>
+                    <div class="comic-word">Need</div>
+                    <div class="comic-phrase">I need help now</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">⬆️</div>
+                    <div class="comic-word">Over</div>
+                    <div class="comic-phrase">Jump over it</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🌊</div>
+                    <div class="comic-word">Wave</div>
+                    <div class="comic-phrase">Wave your hand</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">❌</div>
+                    <div class="comic-word">Stop</div>
+                    <div class="comic-phrase">Stop right now</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">📚</div>
+                    <div class="comic-word">Book</div>
+                    <div class="comic-phrase">Read a book</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">💬</div>
+                    <div class="comic-word">Said</div>
+                    <div class="comic-phrase">He said hello</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">📢</div>
+                    <div class="comic-word">Tell</div>
+                    <div class="comic-phrase">Tell me a story</div>
+                </div>
+            </div>
+            <div class="page-number">Page 4 of 5</div>
+        </div>
+        
+        <!-- Page 5: Words 81-100 -->
+        <div class="page page-5">
+            <div class="title">🎉 You Did It! 100 Words! 🎉</div>
+            
+            <div class="comic-grid">
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">👆</div>
+                    <div class="comic-word">Went</div>
+                    <div class="comic-phrase">He went away</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">💪</div>
+                    <div class="comic-word">Wide</div>
+                    <div class="comic-phrase">A wide road</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">🌊</div>
+                    <div class="comic-word">With</div>
+                    <div class="comic-phrase">Play with me</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">📅</div>
+                    <div class="comic-word">Year</div>
+                    <div class="comic-phrase">Happy new year</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">📍</div>
+                    <div class="comic-word">Zone</div>
+                    <div class="comic-phrase">A safe zone</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">➕</div>
+                    <div class="comic-word">Also</div>
+                    <div class="comic-phrase">I also want it</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">✅</div>
+                    <div class="comic-word">Been</div>
+                    <div class="comic-phrase">I have been there</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🚶</div>
+                    <div class="comic-word">Came</div>
+                    <div class="comic-phrase">He came to play</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">✅</div>
+                    <div class="comic-word">Done</div>
+                    <div class="comic-phrase">All done now</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">⚖️</div>
+                    <div class="comic-word">Even</div>
+                    <div class="comic-phrase">Even I can do</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">📤</div>
+                    <div class="comic-word">From</div>
+                    <div class="comic-phrase">Come from home</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">👋</div>
+                    <div class="comic-word">Gone</div>
+                    <div class="comic-phrase">He has gone</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">📍</div>
+                    <div class="comic-word">Here</div>
+                    <div class="comic-phrase">Come over here</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">🏫</div>
+                    <div class="comic-word">Show</div>
+                    <div class="comic-phrase">Show me how</div>
+                </div>
+                <div class="comic-panel panel-1">
+                    <div class="comic-image">🎯</div>
+                    <div class="comic-word">That</div>
+                    <div class="comic-phrase">That is good</div>
+                </div>
+                <div class="comic-panel panel-2">
+                    <div class="comic-image">🔑</div>
+                    <div class="comic-word">Kept</div>
+                    <div class="comic-phrase">I kept it safe</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">📏</div>
+                    <div class="comic-word">Long</div>
+                    <div class="comic-phrase">A long time</div>
+                </div>
+                <div class="comic-panel panel-3">
+                    <div class="comic-image">🎨</div>
+                    <div class="comic-word">Draw</div>
+                    <div class="comic-phrase">Draw a picture</div>
+                </div>
+                <div class="comic-panel panel-4">
+                    <div class="comic-image">➡️</div>
+                    <div class="comic-word">Next</div>
+                    <div class="comic-phrase">See you next time</div>
+                </div>
+                <div class="comic-panel panel-5">
+                    <div class="comic-image">1️⃣</div>
+                    <div class="comic-word">Once</div>
+                    <div class="comic-phrase">Once upon a time</div>
+                </div>
+                <div class="comic-panel panel-6">
+                    <div class="comic-image">📖</div>
+                    <div class="comic-word">Page</div>
+                    <div class="comic-phrase">Turn the page</div>
+                </div>
+            </div>
+            <div class="page-number">Page 5 of 5 ✨</div>
+        </div>
+    </div>
+</body>
+</html>
